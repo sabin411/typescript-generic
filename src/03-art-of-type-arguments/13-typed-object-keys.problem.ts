@@ -6,8 +6,8 @@ import { Equal, Expect } from "../helpers/type-utils";
  * to do with the way you specify the generic. Can you get
  * both solutions?
  */
-const typedObjectKeys = (obj: unknown) => {
-  return Object.keys(obj);
+const typedObjectKeys = <TObject extends object>(obj: TObject) => {
+  return Object.keys(obj) as Array<keyof TObject>;
 };
 
 it("Should return the keys of the object", () => {
@@ -15,6 +15,12 @@ it("Should return the keys of the object", () => {
     a: 1,
     b: 2,
   });
+
+  type Example = "a" | "b";
+
+  type Array2 = Example[];
+
+  const a: Array2 = ["a", "b"];
 
   expect(result1).toEqual(["a", "b"]);
 
