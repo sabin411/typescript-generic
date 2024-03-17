@@ -1,8 +1,18 @@
 import { expect, it } from "vitest";
 import { Equal, Expect } from "../helpers/type-utils";
 
-function youSayGoodbyeISayHello(greeting: unknown) {
-  return greeting === "goodbye" ? "hello" : "goodbye";
+type GreetingResult<TGreeting> = TGreeting extends "hello"
+  ? "goodbye"
+  : "hello";
+
+function youSayGoodbyeISayHello<TGreeting extends "hello" | "goodbye">(
+  greeting: TGreeting
+) {
+  return (
+    greeting === "goodbye" ? "hello" : "goodbye"
+  ) as GreetingResult<TGreeting>;
+  // type script is not smart enough to match return type with the return type that we infer hence we
+  // are telling typescript that we know better so shut the hell up, I'm using `as`.
 }
 
 it("Should return goodbye when hello is passed in", () => {
